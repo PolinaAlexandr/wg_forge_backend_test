@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
+
 urlpatterns = [
-    path('', views.ping, name='ping'),
+    path('ping', views.ping, name='ping'),
+    path('cats', views.cat_list, name='cat_list'),
 ]

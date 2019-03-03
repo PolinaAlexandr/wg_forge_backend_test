@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Cats
@@ -49,3 +50,15 @@ def cat_list(request):
     cats_serializer = CatsSerializer(cats, many=True)
 
     return Response(cats_serializer.data)
+
+
+@api_view(['POST'])
+def cat_create(request):
+    data = JSONParser().parse(request) 
+
+    serializer = CatsSerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)

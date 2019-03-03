@@ -14,6 +14,9 @@ def ping(request):
 def cat_list(request):
     sort_attribute_attr = request.GET.get('attribute', '') 
 
+    if sort_attribute_attr and not sort_attribute_attr in ('name', 'color', 'tail_length', 'whiskers_length'):
+        return HttpResponse(f'Unknown value of the attribute parameter: "{sort_attribute_attr}"')
+
     sort_order_attr = request.GET.get('order', '') 
 
     limit_attr = request.GET.get('limit', Cats.objects.count())
@@ -45,7 +48,10 @@ def cat_list(request):
 
     order_by_query = f'{sort_order}{sort_attribute_attr}'
 
-    cats = Cats.objects.all().order_by(order_by_query)[offset:limit]
+    if order_by_query:
+        cats = Cats.objects.all().order_by(order_by_query)[offset:limit]
+    else:
+        cats = Cats.objects.all()[offset:limit]
 
     cats_serializer = CatsSerializer(cats, many=True)
 

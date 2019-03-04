@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [ "$#" -ne 1 ]; then
+    printf "Usage:\n$ start_service [--debug | --release]\n"
+
+    exit 1
+fi
+
+function start_debug () {
+    echo "Starting cat_service in DEBUG mode!"
 (
     source venvs/postgrestest/bin/activate
 
@@ -7,3 +15,26 @@
 
     ./manage.py runserver 8080
 )
+}
+
+function start_release () {
+    echo "Starting cat_service in RELEASE mode!"
+
+    pip install -r requirements.txt
+
+    (
+        cd cat_service
+
+        python3 manage.py makemigrations && python3 manage.py migrate
+
+        uwsgi --http :8080 --wsgi-file cat_service/wsgi.py --master --processes 4 --threads 2
+    )
+}
+
+if [ "$1" == "--debug" ]; then
+    start_debug
+elif [ "$1" == "--release" ]; then
+    start_release
+else
+    echo "Unknown flag '$1'. Aborting."
+fi

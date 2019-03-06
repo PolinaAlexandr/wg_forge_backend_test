@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'wg_forge_db',
         'USER': 'wg_forge',
         'PASSWORD': '42a',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }

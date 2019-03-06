@@ -4,3 +4,4 @@
 venvs/
 local/
 *.sqlite3
+start_command

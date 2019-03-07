@@ -26,6 +26,8 @@ function start_release () {
         python3 manage.py makemigrations && python3 manage.py migrate
 
         uwsgi --http :8080 --wsgi-file cat_service/wsgi.py --master --processes 4 --threads 2
+
+        nginx -g "daemon off;"
     )
 }
 

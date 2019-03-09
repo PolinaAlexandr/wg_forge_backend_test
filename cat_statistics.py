@@ -74,7 +74,7 @@ def math_statistics():
 if __name__ == "__main__": 
     try:
         math_statistics()
-        # color_statistics()
+        color_statistics()
     except Exception as ex:
         print(ex)
     
